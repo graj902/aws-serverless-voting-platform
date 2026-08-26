@@ -9,3 +9,9 @@ locals {
     Owner       = "Gururaj"
   }
 }
+
+module "iam" {
+  source       = "../../modules/iam"
+  environment  = var.environment
+  project_name = var.project_name
+}
