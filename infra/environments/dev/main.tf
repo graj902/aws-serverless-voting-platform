@@ -15,3 +15,11 @@ module "iam" {
   environment  = var.environment
   project_name = var.project_name
 }
+
+module "cognito" {
+  source        = "../../modules/cognito"
+  environment   = var.environment
+  tags          = local.common_tags
+  callback_urls = ["http://localhost:5173"]
+  logout_urls   = ["http://localhost:5173"]
+}
