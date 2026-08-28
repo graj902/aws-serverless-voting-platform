@@ -23,3 +23,9 @@ module "cognito" {
   callback_urls = ["http://localhost:5173"]
   logout_urls   = ["http://localhost:5173"]
 }
+
+module "dynamodb" {
+  source      = "../../modules/dynamodb"
+  environment = var.environment
+  tags        = local.common_tags
+}
