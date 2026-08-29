@@ -40,3 +40,13 @@ module "lambda" {
   user_pool_id  = module.cognito.user_pool_id
   tags          = local.common_tags
 }
+
+module "apigateway" {
+  source              = "../../modules/apigateway"
+  api_name            = "svp-${var.environment}-api"
+  lambda_arn          = module.lambda.lambda_function_arn
+  lambda_invoke_arn   = module.lambda.lambda_function_invoke_arn # Note: Assuming this output exists, if not, I'll update the module.
+  user_pool_id        = module.cognito.user_pool_id
+  user_pool_client_id = module.cognito.user_pool_client_id
+  tags                = local.common_tags
+}
