@@ -51,3 +51,33 @@ resource "aws_iam_role_policy_attachment" "lambda_cw_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_cw_policy.arn
 }
+
+# DynamoDB Access Policy
+data "aws_iam_policy_document" "lambda_dynamodb_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:Query"
+    ]
+    resources = [
+      var.table_arn,
+      var.gsi_arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "lambda_dynamodb_policy" {
+  name        = "svp-${var.environment}-lambda-dynamodb-policy"
+  description = "IAM policy for Lambda to access DynamoDB table and GSI"
+  policy      = data.aws_iam_policy_document.lambda_dynamodb_policy.json
+  tags        = local.common_tags
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_dynamodb_policy.arn
+}

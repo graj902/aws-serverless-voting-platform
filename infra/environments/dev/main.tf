@@ -14,6 +14,8 @@ module "iam" {
   source       = "../../modules/iam"
   environment  = var.environment
   project_name = var.project_name
+  table_arn    = module.dynamodb.table_arn
+  gsi_arn      = "${module.dynamodb.table_arn}/index/destination-index"
 }
 
 module "cognito" {

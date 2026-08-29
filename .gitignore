@@ -19,3 +19,10 @@ node_modules/
 
 # Logs
 *.log
+
+
+# Backend build artifacts
+backend/dist/
+
+# Lambda deployment artifacts
+infra/modules/lambda/lambda.zip

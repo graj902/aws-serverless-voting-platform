@@ -8,3 +8,13 @@ variable "project_name" {
   type        = string
   default     = "serverless-voting-platform"
 }
+
+variable "table_arn" {
+  description = "ARN of the DynamoDB table"
+  type        = string
+}
+
+variable "gsi_arn" {
+  description = "ARN of the DynamoDB GSI"
+  type        = string
+}
