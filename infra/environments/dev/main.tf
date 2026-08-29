@@ -29,3 +29,14 @@ module "dynamodb" {
   environment = var.environment
   tags        = local.common_tags
 }
+
+module "lambda" {
+  source        = "../../modules/lambda"
+  environment   = var.environment
+  function_name = "svp-${var.environment}-vote-api"
+  iam_role_arn  = module.iam.lambda_execution_role_arn
+  table_name    = module.dynamodb.table_name
+  gsi_name      = module.dynamodb.gsi_name
+  user_pool_id  = module.cognito.user_pool_id
+  tags          = local.common_tags
+}
