@@ -52,3 +52,9 @@ module "apigateway" {
   user_pool_client_id = module.cognito.user_pool_client_id
   tags                = local.common_tags
 }
+
+module "s3" {
+  source      = "../../modules/s3"
+  bucket_name = "svp-dev-frontend-059872197670"
+  tags        = local.common_tags
+}

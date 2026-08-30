@@ -17,3 +17,18 @@ output "api_id" {
   description = "The ID of the API Gateway"
   value       = module.apigateway.api_id
 }
+
+output "s3_bucket_name" {
+  description = "The name of the S3 bucket"
+  value       = module.s3.bucket_name
+}
+
+output "s3_bucket_arn" {
+  description = "The ARN of the S3 bucket"
+  value       = module.s3.bucket_arn
+}
+
+output "s3_bucket_regional_domain_name" {
+  description = "The regional domain name of the S3 bucket"
+  value       = module.s3.bucket_regional_domain_name
+}
