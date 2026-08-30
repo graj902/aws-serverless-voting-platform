@@ -61,6 +61,13 @@ module "s3" {
   enable_website_hosting      = true
 }
 
+module "github_actions_oidc" {
+  source          = "../../modules/github-actions-oidc"
+  repository_name = "graj902/aws-serverless-voting-platform"
+  s3_bucket_name  = module.s3.bucket_name
+  s3_bucket_arn   = module.s3.bucket_arn
+}
+
 # module "cloudfront" {
 #   source                      = "../../modules/cloudfront"
 #   bucket_name                 = "svp-dev-frontend-059872197670"

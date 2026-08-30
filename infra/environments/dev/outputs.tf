@@ -37,3 +37,8 @@ output "s3_website_endpoint" {
   description = "The website endpoint of the S3 bucket if hosting is enabled"
   value       = module.s3.website_endpoint
 }
+
+output "github_actions_role_arn" {
+  description = "The ARN of the IAM role for GitHub Actions."
+  value       = module.github_actions_oidc.role_arn
+}
