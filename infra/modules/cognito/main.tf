@@ -38,6 +38,12 @@ resource "aws_cognito_user_pool_client" "this" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
+  explicit_auth_flows = [
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+
   callback_urls = var.callback_urls
   logout_urls   = var.logout_urls
 

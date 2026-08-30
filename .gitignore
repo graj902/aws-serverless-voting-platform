@@ -26,3 +26,9 @@ backend/dist/
 
 # Lambda deployment artifacts
 infra/modules/lambda/lambda.zip
+
+# Frontend environment
+frontend/.env
+
+# Frontend build artifacts
+frontend/dist/
