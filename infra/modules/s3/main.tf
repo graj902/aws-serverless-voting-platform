@@ -8,6 +8,20 @@ resource "aws_s3_bucket" "this" {
   tags   = var.tags
 }
 
+# Enables static website hosting when temporary hosting is enabled.
+resource "aws_s3_bucket_website_configuration" "this" {
+  count  = var.enable_website_hosting ? 1 : 0
+  bucket = aws_s3_bucket.this.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
+  }
+}
+
 # Enables versioning for auditability and recovery.
 resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.this.id
@@ -27,23 +41,24 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
-# Blocks all public access to the bucket to ensure it remains private.
+# Blocks all public access to the bucket to ensure it remains private, except when website hosting is enabled.
 resource "aws_s3_bucket_public_access_block" "this" {
   bucket = aws_s3_bucket.this.id
 
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+  block_public_acls       = var.enable_website_hosting ? false : true
+  block_public_policy     = var.enable_website_hosting ? false : true
+  ignore_public_acls      = var.enable_website_hosting ? false : true
+  restrict_public_buckets = var.enable_website_hosting ? false : true
 }
 
-# Bucket policy to allow CloudFront OAC access.
+# Bucket policy to allow CloudFront OAC access and optional temporary public read.
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.cloudfront_oac_access.json
+  policy = data.aws_iam_policy_document.bucket_policy.json
 }
 
-data "aws_iam_policy_document" "cloudfront_oac_access" {
+data "aws_iam_policy_document" "bucket_policy" {
+  # Allow CloudFront OAC access
   statement {
     principals {
       type        = "Service"
@@ -55,6 +70,20 @@ data "aws_iam_policy_document" "cloudfront_oac_access" {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
       values   = [var.cloudfront_distribution_arn]
+    }
+  }
+
+  # Add temporary public read statement if website hosting is enabled
+  dynamic "statement" {
+    for_each = var.enable_website_hosting ? [1] : []
+    content {
+      sid       = "PublicReadGetObject"
+      actions   = ["s3:GetObject"]
+      resources = ["${aws_s3_bucket.this.arn}/*"]
+      principals {
+        type        = "*"
+        identifiers = ["*"]
+      }
     }
   }
 }

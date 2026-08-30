@@ -32,3 +32,8 @@ output "s3_bucket_regional_domain_name" {
   description = "The regional domain name of the S3 bucket"
   value       = module.s3.bucket_regional_domain_name
 }
+
+output "s3_website_endpoint" {
+  description = "The website endpoint of the S3 bucket if hosting is enabled"
+  value       = module.s3.website_endpoint
+}

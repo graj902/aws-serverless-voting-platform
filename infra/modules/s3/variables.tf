@@ -13,3 +13,9 @@ variable "cloudfront_distribution_arn" {
   description = "The ARN of the CloudFront distribution to allow access to."
   type        = string
 }
+
+variable "enable_website_hosting" {
+  description = "Whether to enable static website hosting and public read access temporarily."
+  type        = bool
+  default     = false
+}

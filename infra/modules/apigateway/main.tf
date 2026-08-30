@@ -60,11 +60,11 @@ locals {
 }
 
 resource "aws_apigatewayv2_route" "protected_routes" {
-  for_each          = toset(local.protected_routes)
-  api_id            = aws_apigatewayv2_api.api.id
-  route_key         = each.value
-  target            = "integrations/${aws_apigatewayv2_integration.lambda.id}"
-  authorizer_id     = aws_apigatewayv2_authorizer.cognito.id
+  for_each           = toset(local.protected_routes)
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = each.value
+  target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito.id
   authorization_type = "JWT"
 }
 

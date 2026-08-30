@@ -25,14 +25,14 @@ resource "aws_lambda_function" "vote_api" {
   timeout       = 10
 
   # Source code artifact
-  filename      = "${path.module}/lambda.zip"
+  filename         = "${path.module}/lambda.zip"
   source_code_hash = filebase64sha256("${path.module}/lambda.zip")
-  
+
   # Enable AWS X-Ray tracing
   tracing_config {
     mode = "Active"
   }
-  
+
   environment {
     variables = {
       TABLE_NAME   = var.table_name
