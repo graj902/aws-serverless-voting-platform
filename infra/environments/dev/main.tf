@@ -54,7 +54,16 @@ module "apigateway" {
 }
 
 module "s3" {
-  source      = "../../modules/s3"
-  bucket_name = "svp-dev-frontend-059872197670"
-  tags        = local.common_tags
+  source                      = "../../modules/s3"
+  bucket_name                 = "svp-dev-frontend-059872197670"
+  tags                        = local.common_tags
+  cloudfront_distribution_arn = module.cloudfront.distribution_arn
+}
+
+module "cloudfront" {
+  source                      = "../../modules/cloudfront"
+  bucket_name                 = "svp-dev-frontend-059872197670"
+  bucket_arn                  = module.s3.bucket_arn
+  bucket_regional_domain_name = module.s3.bucket_regional_domain_name
+  tags                        = local.common_tags
 }

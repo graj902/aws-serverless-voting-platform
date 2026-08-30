@@ -8,3 +8,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "cloudfront_distribution_arn" {
+  description = "The ARN of the CloudFront distribution to allow access to."
+  type        = string
+}
